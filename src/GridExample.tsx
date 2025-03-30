@@ -27,15 +27,12 @@ export interface IOlympicData {
 }
 
 const AllCheckbox: React.FC<any> = (props) => {
-  const {
-    isSelected,
-    selectGroup: select,
-    unselectGroup: unselectAll,
-  } = useSelection<IOlympicDataWithId>();
+  const { isSelected, selectGroup, unselectGroup } =
+    useSelection<IOlympicDataWithId>();
   const nodes = (props.api.getRenderedNodes() || []).filter(
     (node) => !!node.data
   );
-  console.log(nodes);
+
   const allSelected = nodes.reduce(
     (isAllSelected, node) => isAllSelected && isSelected(node.data),
     nodes.length > 0
@@ -45,17 +42,17 @@ const AllCheckbox: React.FC<any> = (props) => {
     const items = nodes.map((node) => node.data) || [];
 
     if (allSelected) {
-      unselectAll(items);
-    } else select(items);
+      unselectGroup(items);
+    } else {
+      selectGroup(items);
+    }
   };
   return (
     <Checkbox
       name="select1"
       id="header-idx"
       checked={allSelected}
-      onClick={(a) => {
-        onAllSelected();
-      }}
+      onClick={() => onAllSelected()}
     />
   );
 };
