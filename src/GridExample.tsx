@@ -33,15 +33,15 @@ const AllCheckbox: React.FC<any> = (props) => {
     (node) => !!node.data
   );
 
-  const allSelected = nodes.reduce(
-    (isAllSelected, node) => isAllSelected && isSelected(node.data),
-    nodes.length > 0
+  const selectedCount = nodes.reduce(
+    (count, node) => (isSelected(node.data) ? count + 1 : count),
+    0
   );
 
   const onAllSelected = () => {
     const items = nodes.map((node) => node.data) || [];
 
-    if (allSelected) {
+    if (selectedCount === nodes.length) {
       unselectGroup(items);
     } else {
       selectGroup(items);
@@ -51,7 +51,8 @@ const AllCheckbox: React.FC<any> = (props) => {
     <Checkbox
       name="select1"
       id="header-idx"
-      checked={allSelected}
+      checked={selectedCount === nodes.length}
+      indeterminate={selectedCount < nodes.length && selectedCount > 0}
       onClick={() => onAllSelected()}
     />
   );
